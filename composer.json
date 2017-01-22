@@ -1,5 +1,5 @@
 {
-	"name": "chitanka/wiki",
+	"name": "chitanka/wiki-bundle",
 	"description": "An integrated wiki system based on git",
 	"type": "symfony-bundle",
 	"keywords": [
