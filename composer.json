@@ -9,8 +9,8 @@
 		"MIT"
 	],
 	"require": {
-		"michelf/php-markdown": "1.4.0",
-		"cypresslab/gitelephant": "v1.1.0"
+		"michelf/php-markdown": "^1.7",
+		"cypresslab/gitelephant": "^1.1"
 	},
 	"autoload": {
 		"psr-4": {
