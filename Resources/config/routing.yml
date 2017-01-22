@@ -1,0 +1,30 @@
+chitanka_wiki_history:
+    path:     /wiki/history/{page}
+    defaults: { _controller: ChitankaWikiBundle:Default:history }
+    requirements: { page: .+ }
+
+chitanka_wiki_edit:
+    path:     /wiki/edit/{page}
+    defaults: { _controller: ChitankaWikiBundle:Default:edit }
+    requirements: { page: .+ }
+
+chitanka_wiki_save:
+    path:     /wiki/save/{page}
+    defaults: { _controller: ChitankaWikiBundle:Default:save }
+    requirements: { page: .+ }
+    methods:  [POST]
+
+chitanka_wiki_preview:
+    path:     /wiki/preview/{page}
+    defaults: { _controller: ChitankaWikiBundle:Default:preview }
+    requirements: { page: .+ }
+    methods:  [POST]
+
+chitanka_wiki_all:
+    path:     /wiki/all
+    defaults: { _controller: ChitankaWikiBundle:Default:all }
+
+chitanka_wiki:
+    path:     /{page}
+    defaults: { _controller: ChitankaWikiBundle:Default:show }
+    requirements: { page: .+ }

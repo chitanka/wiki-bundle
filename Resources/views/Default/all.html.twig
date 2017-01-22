@@ -1,0 +1,15 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+	Всички уики страници
+{% endblock %}
+
+{% block content %}
+	<h1 class="page-header">{{ block('title') }}</h1>
+
+	<ul>
+	{% for page in pages %}
+		<li><a href="{{ path('chitanka_wiki', { page: page.name }) }}">{{ page.title }}</a></li>
+	{% endfor %}
+	</ul>
+{% endblock %}

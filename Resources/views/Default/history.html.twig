@@ -1,0 +1,25 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+	<a href="{{ path('chitanka_wiki', {page: page.name}) }}">{{ page.title }}</a>
+	<span class="wiki-header-sub">[списък на промените]</span>
+{% endblock %}
+
+{% block content %}
+	<h1 class="page-header">{{ block('title') }}</h1>
+
+	<ul>
+		{% for commit in commits %}
+			<li>
+				<small>{{ commit.datetimeAuthor|date('d.m.Y, H:i') }}</small> &middot;
+				{{ commit.author.name }} &middot;
+				{{ commit.message }}
+			</li>
+		{% endfor %}
+	</ul>
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('bundles/chitankawiki/css/frontend.css') }}">
+{% endblock %}
