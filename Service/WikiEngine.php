@@ -149,7 +149,7 @@ class WikiEngine {
 			'_' => '-',
 		]);
 		$sanitizedFilename = preg_replace('#[^a-z\d/.-]#', '', $sanitizedFilename);
-		$sanitizedFilename = ltrim($sanitizedFilename, '/.');
+		$sanitizedFilename = trim($sanitizedFilename, '/.');
 		if (strpos($sanitizedFilename, '.') === false) {
 			$sanitizedFilename .= '.md';
 		}
