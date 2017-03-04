@@ -1,15 +1,21 @@
 <?php namespace Chitanka\WikiBundle\Controller;
 
 use Chitanka\WikiBundle\Service\WikiEngine;
+use Chitanka\WikiBundle\Service\WikiPage;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller {
 
 	public function showAction($page) {
+		$page = $this->wikiEngine()->getPage($page);
+		$responseForPage = function(WikiPage $page) {
+			return $page->exists() ? null : new Response('', Response::HTTP_NOT_FOUND);
+		};
 		return $this->renderTemplate('show', [
-			'page' => $this->wikiEngine()->getPage($page),
-		]);
+			'page' => $page,
+		], $responseForPage($page));
 	}
 
 	public function editAction($page) {
@@ -55,7 +61,7 @@ class DefaultController extends Controller {
 		return new WikiEngine($this->container->getParameter('chitanka_wiki.content_dir'));
 	}
 
-	private function renderTemplate($template, $variables) {
-		return $this->render("ChitankaWikiBundle:Default:{$template}.html.twig", $variables);
+	private function renderTemplate($template, $variables, $response = null) {
+		return $this->render("ChitankaWikiBundle:Default:{$template}.html.twig", $variables, $response);
 	}
 }
