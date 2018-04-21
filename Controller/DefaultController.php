@@ -21,7 +21,7 @@ class DefaultController extends Controller {
 	public function editAction($page) {
 		$this->assertEditPermission();
 		return $this->renderTemplate('edit', [
-			'page' => $this->wikiEngine()->getPage($page),
+			'page' => $this->wikiEngine()->getPage($page, true, false),
 		]);
 	}
 

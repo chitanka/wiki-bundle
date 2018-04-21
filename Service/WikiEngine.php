@@ -4,6 +4,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class WikiEngine {
 
+	const MD_EXTENSION = '.md';
+
 	/**
 	 * Convert a text from Markdown into HTML
 	 * @param string $markdownContent
@@ -37,12 +39,16 @@ class WikiEngine {
 	/**
 	 * @param string $filename
 	 * @param bool $withAncestors
+	 * @param bool $doPreprocess
 	 * @return WikiPage
 	 */
-	public function getPage($filename, $withAncestors = true) {
+	public function getPage($filename, $withAncestors = true, $doPreprocess = true) {
 		$filename = $this->sanitizeFileName($filename);
 		try {
 			list($metadata, $content) = $this->getPageSections($filename);
+			if ($doPreprocess) {
+				$content = $this->processIncludeTags($content, $filename);
+			}
 		} catch (NotFoundHttpException $ex) {
 			$metadata = '';
 			$content = null;
@@ -64,7 +70,7 @@ class WikiEngine {
 			$currentAncestorName = '';
 			foreach ($ancestorNames as $ancestorName) {
 				$currentAncestorName .= '/'.$ancestorName;
-				$ancestors[] = $this->getPage($currentAncestorName, false);
+				$ancestors[] = $this->getPage($currentAncestorName, false, false);
 			}
 		}
 		return $ancestors;
@@ -108,7 +114,7 @@ class WikiEngine {
 		$paths = [];
 		foreach ($iter as $path => $dir) {
 			if (!$dir->isDir() && strpos($path, '/.') === false) {
-				$pageName = strtr($path, ["$this->wikiPath/" => '', '.md' => '']);
+				$pageName = strtr($path, ["$this->wikiPath/" => '', self::MD_EXTENSION => '']);
 				$paths[$pageName] = $this->getPage($pageName, false);
 			}
 		}
@@ -132,6 +138,18 @@ class WikiEngine {
 		return $sections;
 	}
 
+	protected function processIncludeTags($content, $currentPage) {
+		return preg_replace_callback('#{include:(.+)}#U', function ($matches) use ($currentPage) {
+			$includedPage = trim($matches[1]);
+			if ($includedPage[0] === '/') {
+				$includedPage = ltrim($includedPage, '/');
+			} else {
+				$includedPage = $this->removeExtensionFromFilename($currentPage).'/'.$includedPage;
+			}
+			return trim($this->getPageSections($includedPage)[1]);
+		}, $content);
+	}
+
 	/**
 	 * @param string $filename
 	 * @return string
@@ -151,9 +169,13 @@ class WikiEngine {
 		$sanitizedFilename = preg_replace('#[^a-z\d/.-]#', '', $sanitizedFilename);
 		$sanitizedFilename = trim($sanitizedFilename, '/.');
 		if (strpos($sanitizedFilename, '.') === false) {
-			$sanitizedFilename .= '.md';
+			$sanitizedFilename .= self::MD_EXTENSION;
 		}
 		return $sanitizedFilename;
+	}
+
+	protected function removeExtensionFromFilename($filename) {
+		return str_replace(self::MD_EXTENSION, '', $filename);
 	}
 
 	/** @return GitRepository */
