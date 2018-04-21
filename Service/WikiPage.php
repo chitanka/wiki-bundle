@@ -9,6 +9,8 @@ class WikiPage {
 	/** @var string */
 	private $content;
 	/** @var string */
+	private $contentAsHtml;
+	/** @var string */
 	private $metadata;
 	/** @var WikiPage[] */
 	private $ancestors = [];
@@ -16,15 +18,17 @@ class WikiPage {
 	/**
 	 * @param string $name
 	 * @param string $content
+	 * @param string $contentAsHtml
 	 * @param string $metadata
 	 * @param WikiPage[] $ancestors
 	 */
-	public function __construct($name, $content, $metadata, $ancestors) {
+	public function __construct($name, $content, $contentAsHtml, $metadata, $ancestors) {
 		$this->name = $name;
 		if (strpos($this->name, '.') !== false) {
 			list($this->name, $this->format) = explode('.', $this->name, 2);
 		}
 		$this->content = $content;
+		$this->contentAsHtml = $contentAsHtml;
 		$this->metadata = $metadata;
 		$this->ancestors = $ancestors;
 	}
@@ -45,10 +49,7 @@ class WikiPage {
 	 * @return string
 	 */
 	public function getContentHtml() {
-		if ($this->format == 'md') {
-			return WikiEngine::markdownToHtml($this->content);
-		}
-		return $this->content;
+		return $this->contentAsHtml;
 	}
 
 	public function getName() {

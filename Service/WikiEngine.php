@@ -11,7 +11,8 @@ class WikiEngine {
 	 * @param string $markdownContent
 	 * @return string
 	 */
-	public static function markdownToHtml($markdownContent) {
+	public function markdownToHtml($markdownContent, $filename) {
+		$markdownContent = $this->processIncludeTags($markdownContent, $filename);
 		$html = Markdown::defaultTransform($markdownContent);
 		$html = preg_replace_callback('#<p>(<img [^>]+>)</p>#', function($match) {
 			if (preg_match('#title="([^"]+)"#', $match[1], $submatch)) {
@@ -39,22 +40,20 @@ class WikiEngine {
 	/**
 	 * @param string $filename
 	 * @param bool $withAncestors
-	 * @param bool $doPreprocess
+	 * @param bool $withRendering
 	 * @return WikiPage
 	 */
-	public function getPage($filename, $withAncestors = true, $doPreprocess = true) {
+	public function getPage($filename, $withAncestors = true, $withRendering = true) {
 		$filename = $this->sanitizeFileName($filename);
 		try {
 			list($metadata, $content) = $this->getPageSections($filename);
-			if ($doPreprocess) {
-				$content = $this->processIncludeTags($content, $filename);
-			}
 		} catch (NotFoundHttpException $ex) {
 			$metadata = '';
 			$content = null;
 		}
 		$ancestors = $withAncestors ? $this->getAncestors($filename) : [];
-		$page = new WikiPage($filename, $content, $metadata, $ancestors);
+		$contentAsHtml = $withRendering ? $this->markdownToHtml($content, $filename) : null;
+		$page = new WikiPage($filename, $content, $contentAsHtml, $metadata, $ancestors);
 		return $page;
 	}
 

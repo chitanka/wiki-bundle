@@ -34,8 +34,8 @@ class DefaultController extends Controller {
 		return $this->redirectToRoute('chitanka_wiki', ['page' => $page]);
 	}
 
-	public function previewAction(Request $request) {
-		return $this->renderTemplate('preview', ['content' => WikiEngine::markdownToHtml($request->request->get('content'))]);
+	public function previewAction($page, Request $request) {
+		return $this->renderTemplate('preview', ['content' => $this->wikiEngine()->markdownToHtml($request->request->get('content'), $page)]);
 	}
 
 	public function historyAction($page) {
