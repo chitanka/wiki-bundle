@@ -1,5 +1,6 @@
 <?php namespace Chitanka\WikiBundle\Service;
 
+use GitElephant\GitBinary;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class WikiEngine {
@@ -179,6 +180,6 @@ class WikiEngine {
 
 	/** @return GitRepository */
 	protected function repo() {
-		return $this->repo ?: $this->repo = new GitRepository($this->wikiPath);
+		return $this->repo ?: $this->repo = new GitRepository($this->wikiPath, new GitBinary('git'));
 	}
 }
