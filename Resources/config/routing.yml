@@ -1,30 +1,30 @@
 chitanka_wiki_history:
     path:     /wiki/history/{page}
-    defaults: { _controller: ChitankaWikiBundle:Default:history }
+    defaults: { _controller: Chitanka\WikiBundle\Controller\DefaultController::historyAction }
     requirements: { page: .+ }
 
 chitanka_wiki_edit:
     path:     /wiki/edit/{page}
-    defaults: { _controller: ChitankaWikiBundle:Default:edit }
+    defaults: { _controller: Chitanka\WikiBundle\Controller\DefaultController::editAction }
     requirements: { page: .+ }
 
 chitanka_wiki_save:
     path:     /wiki/save/{page}
-    defaults: { _controller: ChitankaWikiBundle:Default:save }
+    defaults: { _controller: Chitanka\WikiBundle\Controller\DefaultController::saveAction }
     requirements: { page: .+ }
     methods:  [POST]
 
 chitanka_wiki_preview:
     path:     /wiki/preview/{page}
-    defaults: { _controller: ChitankaWikiBundle:Default:preview }
+    defaults: { _controller: Chitanka\WikiBundle\Controller\DefaultController::previewAction }
     requirements: { page: .+ }
     methods:  [POST]
 
 chitanka_wiki_all:
     path:     /wiki/all
-    defaults: { _controller: ChitankaWikiBundle:Default:all }
+    defaults: { _controller: Chitanka\WikiBundle\Controller\DefaultController::allAction }
 
 chitanka_wiki:
     path:     /{page}
-    defaults: { _controller: ChitankaWikiBundle:Default:show }
+    defaults: { _controller: Chitanka\WikiBundle\Controller\DefaultController::showAction }
     requirements: { page: .+ }

@@ -62,6 +62,6 @@ class DefaultController extends Controller {
 	}
 
 	private function renderTemplate($template, $variables, $response = null) {
-		return $this->render("ChitankaWikiBundle:Default:{$template}.html.twig", $variables, $response);
+		return $this->render("@ChitankaWiki/Default/{$template}.html.twig", $variables, $response);
 	}
 }
