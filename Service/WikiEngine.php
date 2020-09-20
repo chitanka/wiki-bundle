@@ -1,6 +1,5 @@
 <?php namespace Chitanka\WikiBundle\Service;
 
-use GitElephant\GitBinary;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class WikiEngine {
@@ -102,7 +101,7 @@ class WikiEngine {
      * @return \GitElephant\Objects\Log
 	 */
 	public function getHistory($filename) {
-		$commits = $this->repo()->getLog('master', $this->getFullPath($filename), null);
+		$commits = $this->repo()->getLog('master', $this->getFullPath($filename), 500);
 		return $commits;
 	}
 
@@ -178,8 +177,7 @@ class WikiEngine {
 		return str_replace(self::MD_EXTENSION, '', $filename);
 	}
 
-	/** @return GitRepository */
-	protected function repo() {
-		return $this->repo ?: $this->repo = new GitRepository($this->wikiPath, new GitBinary('git'));
+	protected function repo(): GitRepository {
+		return $this->repo ?: $this->repo = new GitRepository($this->wikiPath, 'git');
 	}
 }
