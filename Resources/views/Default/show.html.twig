@@ -6,8 +6,8 @@
 		{{ block('title') }}
 		{% if is_granted('ROLE_WIKI_EDITOR') %}
 			<div class="btn-group pull-right" role="group" aria-label="Действия">
-				<a href="{{ path('chitanka_wiki_edit', { page: page.name }) }}" class="btn btn-default btn-sm" title="Редактиране" data-credentials="edit-wiki"><span class="fa fa-pencil"></span></a>
-				<a href="{{ path('chitanka_wiki_history', { page: page.name }) }}" class="btn btn-default btn-sm" title="История"><span class="fa fa-list-alt"></span></a>
+				<a href="{{ path('chitanka_wiki_edit', { page: page.name }) }}" class="btn btn-light btn-sm" title="Редактиране" data-credentials="edit-wiki"><span class="fa fa-pencil"></span></a>
+				<a href="{{ path('chitanka_wiki_history', { page: page.name }) }}" class="btn btn-light btn-sm" title="История"><span class="fa fa-list-alt"></span></a>
 			</div>
 		{% endif %}
 	</h1>
